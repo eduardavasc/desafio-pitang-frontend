@@ -26,9 +26,8 @@ const TextInput = <T extends FieldValues>({
   label,
   disabled,
 }: TextInputProps<T>) => {
-  console.log(errors[name]?.message);
   return (
-    <FormControl isInvalid={!!errors[name]}>
+    <FormControl isInvalid={!!errors[name]} isRequired>
       <FormLabel htmlFor={name}>{label}</FormLabel>
       <Input id={name} disabled={disabled} {...register(name)} />
       <FormErrorMessage>
