@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export const scheduleSchema = z.object({
-  "patient-name": z.string().min(5, "Nome completo é obrigatório"),
+  "patient-name": z.string().min(5, "Obrigatório ter mais de 5 caracteres"),
   "data-de-nascimento": z
     .date()
     .nullable()
