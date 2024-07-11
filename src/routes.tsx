@@ -1,19 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ScheduleList from "./pages/Schedule/ScheduleList";
 import Schedule from "./pages/Schedule/Schedule";
-import Layout from "./components/Layout";
-
+import ScheduleList from "./pages/Schedule/ScheduleList";
 
 const AppRoutes = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Schedule />} />
-        <Route path="lista-agendamentos" element={<ScheduleList />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+  <>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Schedule />} path="/" />
+        <Route element={<ScheduleList />} path="/lista-agendamentos" />
+      </Routes>
+    </BrowserRouter>
+  </>
 );
 
 export default AppRoutes;
-
