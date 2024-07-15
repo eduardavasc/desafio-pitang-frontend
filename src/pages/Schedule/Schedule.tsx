@@ -10,23 +10,42 @@ import {
   minTime,
 } from "../../utils/dateUtils";
 import { ScheduleFormValues, scheduleSchema } from "./schema";
+import { api } from "../../services/api";
+import { useState } from "react";
+import CustomModal from "../../components/CustomModal";
 
 const Schedule = () => {
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
   } = useForm<ScheduleFormValues>({
     resolver: zodResolver(scheduleSchema),
   });
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const onSubmit = (values: unknown) => {
-    alert(JSON.stringify(values));
+  const onSubmit = async (values: ScheduleFormValues) => {
+    console.log("oiiii")
+    const response = await api.post("/schedule", values);
+    console.log(response.data)
+    if (response.status === 201) {
+      setShowModal(true);
+    } else {
+      alert("Erro ao criar agendamento!");
+    }
   };
-  
+
   return (
     <Flex width="full" align="center" justifyContent="center">
+      {showModal && (
+        <CustomModal
+          isOpen={showModal}
+          message="Agendamento criado com sucesso!"
+          onClose={() => setShowModal(false)}
+          title="Woohooo!!"
+        />
+      )}
       <Box p={2}>
         <Box textAlign="center">
           <Heading>Faça seu agendamento:</Heading>
@@ -34,14 +53,13 @@ const Schedule = () => {
         <Box my={4} textAlign="left">
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextInput
-              // control={control}
               register={register}
               errors={errors}
               label="Nome completo: "
-              name="patient-name"
+              name="patientName"
             />
             <CustomDateInput
-              name="data-de-nascimento"
+              name="patientBirthDate"
               label="Data De Nascimento:"
               dateFormat="dd/MM/yyyy"
               control={control}
@@ -50,7 +68,7 @@ const Schedule = () => {
               showYearDropdown
             />
             <CustomDateInput
-              name="data-agendamento"
+              name="scheduledDate"
               label="Data De Agendamento:"
               dateFormat="dd/MM/yyyy hh:ss aa"
               control={control}
@@ -63,7 +81,7 @@ const Schedule = () => {
               maxTime={maxTime}
               filterTime={filterPassedTime}
             />
-            <Button width="full" mt={8} type="submit">
+            <Button width="full" mt={8} type="submit" isLoading={isLoading}>
               Agendar
             </Button>
           </form>

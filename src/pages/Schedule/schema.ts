@@ -1,8 +1,8 @@
 import * as z from "zod";
 
 export const scheduleSchema = z.object({
-  "patient-name": z.string().min(5, "Obrigatório ter mais de 5 caracteres"),
-  "data-de-nascimento": z
+  "patientName": z.string().min(5, "Obrigatório ter mais de 5 caracteres"),
+  "patientBirthDate": z
     .date()
     .nullable()
     .refine(
@@ -13,7 +13,7 @@ export const scheduleSchema = z.object({
         message: "Data de nascimento é obrigatória",
       }
     ),
-  "data-agendamento": z
+  "scheduledDate": z
     .date()
     .nullable()
     .refine(
