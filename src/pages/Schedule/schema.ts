@@ -1,8 +1,13 @@
 import * as z from "zod";
 
 export const scheduleSchema = z.object({
+<<<<<<< Updated upstream
   "patient-name": z.string().min(5, "Nome completo é obrigatório"),
   "data-de-nascimento": z
+=======
+  "patientName": z.string().min(5, "Obrigatório ter mais de 5 caracteres"),
+  "patientBirthDate": z
+>>>>>>> Stashed changes
     .date()
     .nullable()
     .refine(
@@ -13,7 +18,7 @@ export const scheduleSchema = z.object({
         message: "Data de nascimento é obrigatória",
       }
     ),
-  "data-agendamento": z
+  "scheduledDate": z
     .date()
     .nullable()
     .refine(
