@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import CustomModal from "../../components/CustomModal";
+import CustomModal from "../../components/InfoModal";
 import CustomDateInput from "../../components/Inputs/CustomDateInput";
 import TextInput from "../../components/Inputs/TextInput";
-import { useCustomModal } from "../../contexts/ModalContext";
+import { useInfoModal } from "../../contexts/InfoModalContext";
 import { api } from "../../services/api";
 import {
   filterPassedTime,
@@ -23,11 +23,10 @@ const Schedule = () => {
   } = useForm<ScheduleFormValues>({
     resolver: zodResolver(scheduleSchema),
   });
-  const { openModal, isModalOpen } = useCustomModal();
+  const { openModal, isModalOpen } = useInfoModal();
 
   const onSubmit = async (values: ScheduleFormValues) => {
     const response = await api.post("/schedule", values);
-    console.log(response.data);
     if (response.status === 201) {
       openModal({
         title: "Sucesso!",

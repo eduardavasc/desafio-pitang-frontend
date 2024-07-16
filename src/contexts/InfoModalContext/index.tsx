@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-interface ModalProviderProps {
+interface InfoModalProviderProps {
   children: ReactNode;
 }
 
@@ -9,14 +9,14 @@ interface ModalContent {
   message: string;
 }
 
-interface ModalContextData {
+interface InfoModalContextData {
   isModalOpen: boolean;
   modalContent: ModalContent;
   openModal: (content: ModalContent) => void;
   closeModal: () => void;
 }
 
-const ModalContext = createContext({
+const InfoModalContext = createContext({
   isModalOpen: false,
   modalContent: {
     title: "",
@@ -24,9 +24,9 @@ const ModalContext = createContext({
   },
   openModal: () => {},
   closeModal: () => {},
-} as ModalContextData);
+} as InfoModalContextData);
 
-export const ModalProvider = ({ children }: ModalProviderProps) => {
+export const InfoModalProvider = ({ children }: InfoModalProviderProps) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent>({
     title: "",
@@ -47,12 +47,12 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   };
 
   return (
-    <ModalContext.Provider
+    <InfoModalContext.Provider
       value={{ isModalOpen, modalContent, openModal, closeModal }}
     >
       {children}
-    </ModalContext.Provider>
+    </InfoModalContext.Provider>
   );
 };
 
-export const useCustomModal = () => useContext(ModalContext);
+export const useInfoModal = () => useContext(InfoModalContext);

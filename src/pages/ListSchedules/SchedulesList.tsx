@@ -15,20 +15,15 @@ import {
 } from "@chakra-ui/react";
 import { api } from "../../services/api";
 import dayjs from "dayjs";
-
-interface Schedule {
-  id: number;
-  patientName: string;
-  patientBirthDate: string;
-  scheduledDate: string;
-  scheduleCompleted: boolean;
-  scheduleConclusion: string | null;
-}
+import { Schedule } from "../../types/Schedule";
+import { useFormModal } from "../../contexts/FormModalContext";
+import FormModal from "../../components/FormModal";
 
 const ScheduleList: React.FC = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { isModalOpen, openModal } = useFormModal();
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -44,6 +39,10 @@ const ScheduleList: React.FC = () => {
 
     fetchSchedules();
   }, []);
+
+  const handleClick = (schedule: Schedule) => {
+    openModal(schedule);
+  };
 
   if (loading) {
     return (
@@ -63,6 +62,7 @@ const ScheduleList: React.FC = () => {
 
   return (
     <Flex width="full" align="center" justifyContent="center" p={5}>
+      {isModalOpen && <FormModal />}
       <Box w="full" maxW="1200px">
         <Box textAlign="center" mb={6}>
           <Heading>Lista de Agendamentos</Heading>
@@ -95,11 +95,7 @@ const ScheduleList: React.FC = () => {
                     {dayjs(schedule.scheduledDate).format("DD/MM/YYYY HH:mm")}
                   </Td>
                   <Td>
-                    <Checkbox isChecked={schedule.scheduleCompleted}>
-                      {schedule.scheduleCompleted
-                        ? "Concluído"
-                        : "Não concluído"}
-                    </Checkbox>
+                    {schedule.scheduleCompleted ? "Concluído" : "Não concluído"}
                   </Td>
                   <Td>
                     {schedule.scheduleConclusion
@@ -107,7 +103,9 @@ const ScheduleList: React.FC = () => {
                       : ""}
                   </Td>
                   <Td>
-                    <Button>Editar</Button>
+                    <Button onClick={() => handleClick(schedule)}>
+                      Editar
+                    </Button>
                   </Td>
                 </Tr>
               ))}
