@@ -9,30 +9,26 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useCustomModal } from "../../contexts/ModalContext";
 
-interface CustomModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  message: string;
-}
+const CustomModal = () => {
+  const { isModalOpen, modalContent, closeModal } = useCustomModal();
 
-const CustomModal = ({ isOpen, onClose, title, message }: CustomModalProps) => {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
+      <Modal isOpen={isModalOpen} onClose={closeModal} isCentered size="lg">
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(5px) hue-rotate(90deg)"
         />
         <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader>{modalContent.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>{message}</Text>
+            <Text>{modalContent.message}</Text>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={closeModal}>
               OK
             </Button>
           </ModalFooter>

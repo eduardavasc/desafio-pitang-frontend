@@ -1,8 +1,11 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomModal from "../../components/CustomModal";
 import CustomDateInput from "../../components/Inputs/CustomDateInput";
 import TextInput from "../../components/Inputs/TextInput";
+import { useCustomModal } from "../../contexts/ModalContext";
+import { api } from "../../services/api";
 import {
   filterPassedTime,
   maxTime,
@@ -10,9 +13,6 @@ import {
   minTime,
 } from "../../utils/dateUtils";
 import { ScheduleFormValues, scheduleSchema } from "./schema";
-import { api } from "../../services/api";
-import { useState } from "react";
-import CustomModal from "../../components/CustomModal";
 
 const Schedule = () => {
   const {
@@ -23,14 +23,16 @@ const Schedule = () => {
   } = useForm<ScheduleFormValues>({
     resolver: zodResolver(scheduleSchema),
   });
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const { openModal, isModalOpen } = useCustomModal();
 
   const onSubmit = async (values: ScheduleFormValues) => {
-    console.log("oiiii")
     const response = await api.post("/schedule", values);
-    console.log(response.data)
+    console.log(response.data);
     if (response.status === 201) {
-      setShowModal(true);
+      openModal({
+        title: "Sucesso!",
+        message: "Agendamento feito com sucesso!",
+      });
     } else {
       alert("Erro ao criar agendamento!");
     }
@@ -38,14 +40,7 @@ const Schedule = () => {
 
   return (
     <Flex width="full" align="center" justifyContent="center">
-      {showModal && (
-        <CustomModal
-          isOpen={showModal}
-          message="Agendamento criado com sucesso!"
-          onClose={() => setShowModal(false)}
-          title="Woohooo!!"
-        />
-      )}
+      {isModalOpen && <CustomModal />}
       <Box p={2}>
         <Box textAlign="center">
           <Heading>Faça seu agendamento:</Heading>
