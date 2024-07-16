@@ -11,20 +11,19 @@ import {
   ModalOverlay,
   Select,
 } from "@chakra-ui/react";
-import { useFormModal } from "../../contexts/FormModalContext";
 import { useForm } from "react-hook-form";
+import { useFormModal } from "../../contexts/FormModalContext";
+import { useSchedule } from "../../contexts/ScheduleContext";
 import TextInput from "../Inputs/TextInput";
-import { api } from "../../services/api";
-import { AxiosError } from "axios";
 
-interface IFormData {
+export interface EditScheduleFormValues {
   scheduleCompleted: boolean;
   scheduleConclusion?: string | null;
 }
 
 const FormModal = () => {
   const { isModalOpen, schedule, closeModal } = useFormModal();
-
+  const { editSchedule } = useSchedule();
   const {
     register,
     handleSubmit,
@@ -36,13 +35,9 @@ const FormModal = () => {
     },
   });
 
-  const onSubmit = async (data: IFormData) => {
+  const onSubmit = async (data: EditScheduleFormValues) => {
     try {
-      await api.patch(`/schedule/${schedule.id}`, {
-        scheduleCompleted:
-          data.scheduleCompleted.toString() === "true" ? true : false,
-        scheduleConclusion: data.scheduleConclusion,
-      });
+      await editSchedule({ scheduleId: schedule.id, values: data });
       closeModal();
     } catch (error: any) {
       if (
