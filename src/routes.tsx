@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Schedule from "./pages/Schedule/Schedule";
-import ScheduleList from "./pages/Schedule/ScheduleList";
+import ScheduleList from "./pages/ListSchedules/SchedulesList";
 import Layout from "./components/Layout";
 
 const AppRoutes = () => (

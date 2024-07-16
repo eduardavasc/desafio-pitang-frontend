@@ -8,32 +8,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import NavLink from "../NavLink";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const Links = ["Agendamento", "Consulta Agendamentos"];
-
-const NavLink = (props: Props) => {
-  const { children } = props;
-
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
-  );
-};
+const Links = [
+  { name: "Agendamento", path: "/" },
+  { name: "Consulta Agendamentos", path: "/lista-agendamentos" },
+];
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,7 +37,9 @@ export default function NavBar() {
               display={{ base: "none", md: "flex" }}
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link.name} to={link.path}>
+                  {link.name}
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -67,7 +49,9 @@ export default function NavBar() {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link.name} to={link.path}>
+                  {link.name}
+                </NavLink>
               ))}
             </Stack>
           </Box>
