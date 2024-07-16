@@ -5,7 +5,7 @@ import CustomModal from "../../components/InfoModal";
 import CustomDateInput from "../../components/Inputs/CustomDateInput";
 import TextInput from "../../components/Inputs/TextInput";
 import { useInfoModal } from "../../contexts/InfoModalContext";
-import { api } from "../../services/api";
+import { useSchedule } from "../../contexts/ScheduleContext";
 import {
   filterPassedTime,
   maxTime,
@@ -24,9 +24,10 @@ const Schedule = () => {
     resolver: zodResolver(scheduleSchema),
   });
   const { openModal, isModalOpen } = useInfoModal();
+  const { createSchedule } = useSchedule();
 
   const onSubmit = async (values: ScheduleFormValues) => {
-    const response = await api.post("/schedule", values);
+    const response = await createSchedule(values);
     if (response.status === 201) {
       openModal({
         title: "Sucesso!",

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
 import {
   Box,
+  Button,
   Flex,
   Heading,
   Spinner,
@@ -9,27 +9,25 @@ import {
   Td,
   Th,
   Thead,
-  Tr,
-  Checkbox,
-  Button,
+  Tr
 } from "@chakra-ui/react";
-import { api } from "../../services/api";
 import dayjs from "dayjs";
-import { Schedule } from "../../types/Schedule";
-import { useFormModal } from "../../contexts/FormModalContext";
+import React, { useEffect, useState } from "react";
 import FormModal from "../../components/FormModal";
+import { useFormModal } from "../../contexts/FormModalContext";
+import { useSchedule } from "../../contexts/ScheduleContext";
+import { Schedule } from "../../types/Schedule";
 
 const ScheduleList: React.FC = () => {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { isModalOpen, openModal } = useFormModal();
+  const {getSchedules, schedules} = useSchedule()
 
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
-        const response = await api.get("/schedules");
-        setSchedules(response.data);
+        await getSchedules()
       } catch (err) {
         setError("Erro ao carregar agendamentos.");
       } finally {
