@@ -10,7 +10,7 @@ interface ScheduleProviderProps {
 }
 
 interface ScheduleContextData {
-  schedules: Schedule[];
+  schedules: GroupedSchedule[];
   getSchedules: () => Promise<void>;
   editSchedule: (data: EditScheduleProps) => Promise<AxiosResponse<any, any>>;
   createSchedule: (
@@ -23,18 +23,54 @@ interface EditScheduleProps {
   scheduleId: string;
 }
 
+export interface GroupedSchedule {
+  date: string;
+  time: string;
+  schedules: Schedule[];
+}
+
 const ScheduleContext = createContext({
-  schedules: [] as Schedule[],
+  schedules: [] as GroupedSchedule[],
 } as ScheduleContextData);
 
 export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [schedules, setSchedules] = useState<GroupedSchedule[]>([]);
 
   const getSchedules = async () => {
-    const response = await api.get("/schedules");
-    if (response.data) {
-      setSchedules(response.data);
+    try {
+      const response = await api.get("/schedules");
+      if (response.data) {
+        const groupedSchedules = groupSchedulesByDateTime(response.data);
+        setSchedules(groupedSchedules);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar agendamentos:", error);
     }
+  };
+
+  const groupSchedulesByDateTime = (data: Schedule[]): GroupedSchedule[] => {
+    const groupedSchedules: { [key: string]: GroupedSchedule } = {};
+
+    data.forEach((schedule) => {
+      const scheduledDate = new Date(schedule.scheduledDate);
+      const dateKey = scheduledDate.toDateString();
+      const timeKey =
+        scheduledDate.getHours() + ":" + scheduledDate.getMinutes();
+
+      const key = `${dateKey}-${timeKey}`;
+
+      if (!groupedSchedules[key]) {
+        groupedSchedules[key] = {
+          date: dateKey,
+          time: timeKey,
+          schedules: [],
+        };
+      }
+
+      groupedSchedules[key].schedules.push(schedule);
+    });
+
+    return Object.values(groupedSchedules);
   };
 
   const refreshSchedules = async () => {
