@@ -12,11 +12,11 @@ import {
 import { useInfoModal } from "../../contexts/InfoModalContext";
 
 const InfoModal = () => {
-  const { isModalOpen, modalContent, closeModal } = useInfoModal();
+  const { isInfoModalOpen, modalContent, closeModal } = useInfoModal();
 
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={closeModal} isCentered size="lg">
+      <Modal isOpen={isInfoModalOpen} onClose={closeModal} isCentered size="lg">
         <ModalOverlay
           bg="blackAlpha.300"
         />

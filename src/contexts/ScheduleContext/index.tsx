@@ -37,15 +37,13 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
   const [schedules, setSchedules] = useState<GroupedSchedule[]>([]);
 
   const getSchedules = async () => {
-    try {
+    
       const response = await api.get("/schedules");
       if (response.data) {
         const groupedSchedules = groupSchedulesByDateTime(response.data);
         setSchedules(groupedSchedules);
       }
-    } catch (error) {
-      console.error("Erro ao carregar agendamentos:", error);
-    }
+    
   };
 
   const groupSchedulesByDateTime = (data: Schedule[]): GroupedSchedule[] => {

@@ -10,36 +10,36 @@ interface ModalContent {
 }
 
 interface InfoModalContextData {
-  isModalOpen: boolean;
+  isInfoModalOpen: boolean;
   modalContent: ModalContent;
-  openModal: (content: ModalContent) => void;
+  openInfoModal: (content: ModalContent) => void;
   closeModal: () => void;
 }
 
 const InfoModalContext = createContext({
-  isModalOpen: false,
+  isInfoModalOpen: false,
   modalContent: {
     title: "",
     message: "",
   },
-  openModal: () => {},
+  openInfoModal: () => {},
   closeModal: () => {},
 } as InfoModalContextData);
 
 export const InfoModalProvider = ({ children }: InfoModalProviderProps) => {
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent>({
     title: "",
     message: "",
   });
 
-  const openModal = (content: ModalContent) => {
+  const openInfoModal = (content: ModalContent) => {
     setModalContent(content);
-    setModalOpen(true);
+    setIsInfoModalOpen(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setIsInfoModalOpen(false);
     setModalContent({
       title: "",
       message: "",
@@ -48,7 +48,7 @@ export const InfoModalProvider = ({ children }: InfoModalProviderProps) => {
 
   return (
     <InfoModalContext.Provider
-      value={{ isModalOpen, modalContent, openModal, closeModal }}
+      value={{ isInfoModalOpen, modalContent, openInfoModal, closeModal }}
     >
       {children}
     </InfoModalContext.Provider>
