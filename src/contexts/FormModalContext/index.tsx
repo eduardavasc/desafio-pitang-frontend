@@ -6,36 +6,36 @@ interface FormModalProviderProps {
 }
 
 interface FormModalContextData {
-  isModalOpen: boolean;
+  isFormModalOpen: boolean;
   schedule: Schedule;
-  openModal: (content: Schedule) => void;
+  openFormModal: (content: Schedule) => void;
   closeModal: () => void;
 }
 
 const FormModalContext = createContext({
-  isModalOpen: false,
+  isFormModalOpen: false,
   schedule: {} as Schedule,
-  openModal: () => {},
+  openFormModal: () => {},
   closeModal: () => {},
 } as FormModalContextData);
 
 export const FormModalProvider = ({ children }: FormModalProviderProps) => {
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState<boolean>(false);
   const [schedule, setSchedule] = useState<Schedule>({} as Schedule);
 
-  const openModal = (sched: Schedule) => {
+  const openFormModal = (sched: Schedule) => {
     setSchedule(sched);
-    setModalOpen(true);
+    setIsFormModalOpen(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setIsFormModalOpen(false);
     setSchedule({} as Schedule);
   };
 
   return (
     <FormModalContext.Provider
-      value={{ isModalOpen, schedule, openModal, closeModal }}
+      value={{ isFormModalOpen, schedule, openFormModal, closeModal }}
     >
       {children}
     </FormModalContext.Provider>

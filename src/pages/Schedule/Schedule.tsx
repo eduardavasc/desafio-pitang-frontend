@@ -23,24 +23,29 @@ const Schedule = () => {
   } = useForm<ScheduleFormValues>({
     resolver: zodResolver(scheduleSchema),
   });
-  const { openModal, isModalOpen } = useInfoModal();
+  const { openInfoModal, isInfoModalOpen } = useInfoModal();
   const { createSchedule } = useSchedule();
 
   const onSubmit = async (values: ScheduleFormValues) => {
-    const response = await createSchedule(values);
-    if (response.status === 201) {
-      openModal({
-        title: "Sucesso!",
-        message: "Agendamento feito com sucesso!",
+    try {
+      const response = await createSchedule(values);
+      if (response.status === 201) {
+        openInfoModal({
+          title: "Sucesso!",
+          message: "Agendamento feito com sucesso!",
+        });
+      }
+    } catch (error: any) {
+      openInfoModal({
+        title: "Algo deu errado!",
+        message: error.response?.data?.message || "Verifique sua conexão e tente novamente.",
       });
-    } else {
-      alert("Erro ao criar agendamento!");
     }
   };
 
   return (
     <Flex width="full" align="center" justifyContent="center">
-      {isModalOpen && <CustomModal />}
+      {isInfoModalOpen && <CustomModal />}
       <Box p={2}>
         <Box textAlign="center">
           <Heading>Faça seu agendamento:</Heading>

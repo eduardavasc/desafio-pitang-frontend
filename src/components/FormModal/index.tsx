@@ -22,7 +22,7 @@ export interface EditScheduleFormValues {
 }
 
 const FormModal = () => {
-  const { isModalOpen, schedule, closeModal } = useFormModal();
+  const { isFormModalOpen, schedule, closeModal } = useFormModal();
   const { editSchedule } = useSchedule();
   const {
     register,
@@ -54,7 +54,7 @@ const FormModal = () => {
 
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={closeModal} isCentered size="lg">
+      <Modal isOpen={isFormModalOpen} onClose={closeModal} isCentered size="lg">
         <ModalOverlay bg="blackAlpha.300" />
         <ModalContent>
           <ModalHeader>ID do Agendamento: {schedule.id}</ModalHeader>

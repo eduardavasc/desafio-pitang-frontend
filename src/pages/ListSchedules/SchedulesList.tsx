@@ -18,19 +18,24 @@ import { useFormModal } from "../../contexts/FormModalContext";
 import { useSchedule } from "../../contexts/ScheduleContext";
 import { GroupedSchedule } from "../../contexts/ScheduleContext";
 import { Schedule } from "../../types/Schedule";
+import { useInfoModal } from "../../contexts/InfoModalContext";
+import InfoModal from "../../components/InfoModal";
 
 const ScheduleList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const { isModalOpen, openModal } = useFormModal();
+  const { isFormModalOpen, openFormModal } = useFormModal();
+  const { isInfoModalOpen, openInfoModal } = useInfoModal();
   const { schedules, getSchedules } = useSchedule();
 
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
         await getSchedules();
-      } catch (err) {
-        setError("Erro ao carregar agendamentos.");
+      } catch (err: any) {
+        openInfoModal({
+          title: "Algo deu errado.",
+          message: "Erro ao carregar agendamentos, verifique a conexão e tente novamente mais tarde.",
+        });
       } finally {
         setLoading(false);
       }
@@ -40,7 +45,7 @@ const ScheduleList: React.FC = () => {
   }, []);
 
   const handleClick = (schedule: Schedule) => {
-    openModal(schedule);
+    openFormModal(schedule);
   };
 
   const sortedSchedules = schedules.sort((a, b) => {
@@ -57,17 +62,10 @@ const ScheduleList: React.FC = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Flex width="full" align="center" justifyContent="center" p={5}>
-        <Heading>{error}</Heading>
-      </Flex>
-    );
-  }
-
   return (
     <Flex width="full" align="center" justifyContent="center" p={5}>
-      {isModalOpen && <FormModal />}
+      {isFormModalOpen && <FormModal />}
+      {isInfoModalOpen && <InfoModal />}
       <Box w="full" maxW="1200px">
         <Box textAlign="center" mb={6}>
           <Heading>Lista de Agendamentos</Heading>
