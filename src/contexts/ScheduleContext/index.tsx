@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import { EditScheduleFormValues } from "../../components/FormModal";
 import { ScheduleFormValues } from "../../pages/Schedule/schema";
 import { AxiosResponse } from "axios";
+import dayjs from "dayjs";
 
 interface ScheduleProviderProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface ScheduleProviderProps {
 
 interface ScheduleContextData {
   schedules: GroupedSchedule[];
+  excludedTimesList: Date[];
   getSchedules: () => Promise<void>;
   editSchedule: (data: EditScheduleProps) => Promise<AxiosResponse<any, any>>;
   createSchedule: (
@@ -31,19 +33,43 @@ export interface GroupedSchedule {
 
 const ScheduleContext = createContext({
   schedules: [] as GroupedSchedule[],
+  excludedTimesList: [] as Date[],
 } as ScheduleContextData);
 
 export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
   const [schedules, setSchedules] = useState<GroupedSchedule[]>([]);
+  const [excludedTimesList, setExcludedTimesList] = useState<Date[]>([]);
 
   const getSchedules = async () => {
-    
-      const response = await api.get("/schedules");
-      if (response.data) {
-        const groupedSchedules = groupSchedulesByDateTime(response.data);
-        setSchedules(groupedSchedules);
+    const response = await api.get("/schedules");
+    if (response.data) {
+      const groupedSchedules = groupSchedulesByDateTime(response.data);
+      const excludedTimes = getExcludedTimes(response.data);
+      setSchedules(groupedSchedules);
+      setExcludedTimesList(excludedTimes);
+    }
+  };
+
+  const getExcludedTimes = (data: Schedule[]): Date[] => {
+    const excludedTimes = [] as Date[];
+    const dateCounts: { [key: string]: number } = {};
+
+    data.forEach((sched) => {
+      const dateKey = dayjs(sched.scheduledDate).format("YYYY-MM-DD HH:mm");
+      if (dateCounts[dateKey]) {
+        dateCounts[dateKey]++;
+      } else {
+        dateCounts[dateKey] = 1;
       }
-    
+    });
+
+    for (const dateKey in dateCounts) {
+      if (dateCounts[dateKey] === 2) {
+        excludedTimes.push(new Date(dateKey));
+      }
+    }
+
+    return excludedTimes;
   };
 
   const groupSchedulesByDateTime = (data: Schedule[]): GroupedSchedule[] => {
@@ -98,7 +124,13 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
 
   return (
     <ScheduleContext.Provider
-      value={{ schedules, getSchedules, editSchedule, createSchedule }}
+      value={{
+        schedules,
+        getSchedules,
+        editSchedule,
+        createSchedule,
+        excludedTimesList,
+      }}
     >
       {children}
     </ScheduleContext.Provider>
