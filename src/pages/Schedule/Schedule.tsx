@@ -6,13 +6,9 @@ import CustomDateInput from "../../components/Inputs/CustomDateInput";
 import TextInput from "../../components/Inputs/TextInput";
 import { useInfoModal } from "../../contexts/InfoModalContext";
 import { useSchedule } from "../../contexts/ScheduleContext";
-import {
-  filterPassedTime,
-  maxTime,
-  minDate,
-  minTime,
-} from "../../utils/dateUtils";
+import { maxTime, minDate, minTime } from "../../utils/dateUtils";
 import { ScheduleFormValues, scheduleSchema } from "./schema";
+import { useEffect } from "react";
 
 const Schedule = () => {
   const {
@@ -24,7 +20,7 @@ const Schedule = () => {
     resolver: zodResolver(scheduleSchema),
   });
   const { openInfoModal, isInfoModalOpen } = useInfoModal();
-  const { createSchedule } = useSchedule();
+  const { createSchedule, getSchedules, excludedTimesList } = useSchedule();
 
   const onSubmit = async (values: ScheduleFormValues) => {
     try {
@@ -38,9 +34,36 @@ const Schedule = () => {
     } catch (error: any) {
       openInfoModal({
         title: "Algo deu errado!",
-        message: error.response?.data?.message || "Verifique sua conexão e tente novamente.",
+        message:
+          error.response?.data?.message ||
+          "Verifique sua conexão e tente novamente.",
       });
     }
+  };
+  useEffect(() => {
+    const fetchSchedules = async () => {
+      try {
+        await getSchedules();
+      } catch (err: any) {}
+    };
+
+    fetchSchedules();
+  }, []);
+
+  const filterPassedTime = (time: Date): boolean => {
+    const currentDate = new Date();
+    const selectedDate = time;
+    let invalidTime = true;
+    excludedTimesList.forEach((date) => {
+      if (selectedDate.getTime() === date.getTime()) {
+        invalidTime = false;
+      }
+    });
+    if (currentDate.getTime() < selectedDate.getTime() && invalidTime) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
@@ -70,7 +93,7 @@ const Schedule = () => {
             <CustomDateInput
               name="scheduledDate"
               label="Data De Agendamento:"
-              dateFormat="dd/MM/yyyy hh:ss aa"
+              dateFormat="dd/MM/yyyy hh:mm aa"
               control={control}
               errors={errors}
               withPortal
