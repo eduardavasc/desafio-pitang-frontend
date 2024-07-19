@@ -1,7 +1,7 @@
 
 # Desafio Final do Processo de Estágio Pitang 2024
 
-Este projeto é a solução para o desafio final do processo de estágio da Pitang 2024. A aplicação foi desenvolvida utilizando React e oferece duas páginas principais: uma para realização do agendamento e outra para consulta de todos os agendamentos feitos.
+Este projeto é a solução para o desafio final do processo de estágio da Pitang 2024. A aplicação foi desenvolvida utilizando React e oferece duas páginas: uma para realização do agendamento e outra para consulta de todos os agendamentos feitos.
 
 
 ## Funcionalidades
@@ -41,9 +41,9 @@ Instale as dependências:
 
 Para iniciar a aplicação, use o comando:
 ```
-npm start
+npm run dev
 #ou
-yarn start
+yarn dev
 
 ```
 ## Testes
