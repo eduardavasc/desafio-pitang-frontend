@@ -23,7 +23,7 @@ Clone o repositório:
 
 ```bash
   git clone
-  cd desafio-pitang-api
+  cd desafio-pitang-frontend
 ```
 Instale as dependências:
 
