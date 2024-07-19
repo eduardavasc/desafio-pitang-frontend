@@ -41,7 +41,7 @@ describe("<Schedule />", () => {
     ).toBeInTheDocument();
   });
 
-  it.only("should call createSchedule on form submit with all filled values", async () => {
+  it("should call createSchedule on form submit with all filled values", async () => {
     const createSchedule = jest.fn();
     jest.spyOn(ScheduleContext, "useSchedule").mockReturnValue({
       schedules,
