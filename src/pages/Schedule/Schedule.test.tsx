@@ -86,7 +86,7 @@ describe("<Schedule />", () => {
       </ScheduleContext.ScheduleProvider>
     );
 
-    await userEvent.type(screen.getByTestId("formTextInput"), "John Doe");
+    await userEvent.type(screen.getByTestId("formTextInput"), "John");
     fireEvent.change(screen.getByTestId("patientBirthDate"), {
       target: { value: "1990-01-01" },
     });
@@ -94,6 +94,37 @@ describe("<Schedule />", () => {
     await userEvent.click(screen.getByRole("button", { name: /Agendar/i }));
 
     expect(createSchedule).not.toHaveBeenCalled();
+  });
+
+  it("should show error message if the patient name is incorret", async () => {
+    const createSchedule = jest.fn();
+    jest.spyOn(ScheduleContext, "useSchedule").mockReturnValue({
+      schedules,
+      getSchedules: jest.fn().mockResolvedValue(schedules),
+      excludedTimesList: [],
+      editSchedule: jest.fn(),
+      createSchedule: createSchedule,
+    });
+
+    render(
+      <ScheduleContext.ScheduleProvider>
+        <Schedule />
+      </ScheduleContext.ScheduleProvider>
+    );
+
+    await userEvent.type(screen.getByTestId("formTextInput"), "John");
+    fireEvent.change(screen.getByTestId("patientBirthDate"), {
+      target: { value: "1990-01-01" },
+    });
+    fireEvent.change(screen.getByTestId("scheduledDate"), {
+      target: { value: "2024-07-20 10:00 AM" },
+    });
+
+    await userEvent.click(screen.getByRole("button", { name: /Agendar/i }));
+
+    expect(
+      screen.getByText("Obrigatório ter mais de 5 caracteres")
+    ).toBeInTheDocument();
   });
 
   it("should render the calendar", async () => {
