@@ -26,6 +26,7 @@ interface CustomDateInputProps<T extends FieldValues> {
   showTimeSelect?: boolean;
   timeIntervals?: number;
   minDate?: Date;
+  maxDate?: Date;
   minTime?: Date;
   maxTime?: Date;
   filterTime?: (time: Date) => boolean;
@@ -42,6 +43,7 @@ const CustomDateInput = <T extends FieldValues>({
   showTimeSelect,
   timeIntervals = 60,
   minDate,
+  maxDate,
   minTime,
   maxTime,
   filterTime,
@@ -64,6 +66,7 @@ const CustomDateInput = <T extends FieldValues>({
               showTimeSelect={showTimeSelect}
               timeIntervals={timeIntervals}
               minDate={minDate}
+              maxDate={maxDate}
               minTime={minTime}
               maxTime={maxTime}
               filterTime={filterTime}
