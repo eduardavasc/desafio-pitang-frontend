@@ -90,6 +90,7 @@ const Schedule = () => {
               name="patientBirthDate"
               label="Data De Nascimento:"
               dateFormat="dd/MM/yyyy"
+              maxDate={new Date()}
               control={control}
               errors={errors}
               withPortal
