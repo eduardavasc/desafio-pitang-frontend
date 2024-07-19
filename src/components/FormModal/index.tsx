@@ -28,6 +28,7 @@ const FormModal = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm({
     defaultValues: {
       scheduleCompleted: schedule.scheduleCompleted,
@@ -52,6 +53,8 @@ const FormModal = () => {
     }
   };
 
+  const watchedValues = watch()
+
   return (
     <>
       <Modal isOpen={isFormModalOpen} onClose={closeModal} isCentered size="lg">
@@ -73,6 +76,7 @@ const FormModal = () => {
                 errors={errors}
                 label="Conclusão do agendamento: "
                 name="scheduleConclusion"
+                disabled={watchedValues.scheduleCompleted.toString() === "false"}
               />
 
               <ModalFooter>
