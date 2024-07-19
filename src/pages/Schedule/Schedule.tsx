@@ -80,6 +80,7 @@ const Schedule = () => {
               errors={errors}
               label="Nome completo: "
               name="patientName"
+              data-testid="patientName"
             />
             <CustomDateInput
               name="patientBirthDate"
@@ -89,6 +90,7 @@ const Schedule = () => {
               errors={errors}
               withPortal
               showYearDropdown
+              testId="patientBirthDate"
             />
             <CustomDateInput
               name="scheduledDate"
@@ -103,6 +105,7 @@ const Schedule = () => {
               minTime={minTime}
               maxTime={maxTime}
               filterTime={filterPassedTime}
+              testId="scheduledDate"
             />
             <Button width="full" mt={8} type="submit" isLoading={isLoading}>
               Agendar

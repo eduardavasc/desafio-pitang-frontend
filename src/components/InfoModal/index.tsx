@@ -20,7 +20,7 @@ const InfoModal = () => {
         <ModalOverlay
           bg="blackAlpha.300"
         />
-        <ModalContent>
+        <ModalContent data-testid="infoModalContent">
           <ModalHeader>{modalContent.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

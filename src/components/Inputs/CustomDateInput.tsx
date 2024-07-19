@@ -10,7 +10,7 @@ import {
   Controller,
   FieldErrors,
   FieldValues,
-  Path
+  Path,
 } from "react-hook-form";
 import { GroupedSchedule } from "../../contexts/ScheduleContext";
 
@@ -20,6 +20,7 @@ interface CustomDateInputProps<T extends FieldValues> {
   control: Control<T>;
   errors: FieldErrors<T>;
   dateFormat: string;
+  testId: string;
   schedules?: GroupedSchedule[];
   withPortal?: boolean;
   showTimeSelect?: boolean;
@@ -45,8 +46,8 @@ const CustomDateInput = <T extends FieldValues>({
   maxTime,
   filterTime,
   showYearDropdown,
+  testId
 }: CustomDateInputProps<T>) => {
- 
   return (
     <FormControl isRequired mt={4} isInvalid={!!errors[name]}>
       <FormLabel htmlFor={name}>{label}</FormLabel>
@@ -68,7 +69,7 @@ const CustomDateInput = <T extends FieldValues>({
               filterTime={filterTime}
               showYearDropdown={showYearDropdown}
               dateFormat={dateFormat}
-              customInput={<Input />}
+              customInput={<Input data-testid={testId}/>}
             />
           );
         }}
