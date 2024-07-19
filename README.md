@@ -1,28 +1,62 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Desafio Final do Processo de Estágio Pitang 2024
 
-Currently, two official plugins are available:
+Este projeto é a solução para o desafio final do processo de estágio da Pitang 2024. A aplicação foi desenvolvida utilizando React e oferece duas páginas principais: uma para realização do agendamento e outra para consulta de todos os agendamentos feitos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+- Agendamento: Permite que os usuários agendem horários com as seguintes restrições:
+  - Máximo de 2 agendamentos por hora.
+  - Intervalo mínimo de 1 hora entre agendamentos.
+  - Limite de 20 agendamentos por dia.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Consulta de Horários: Permite a visualização da listagem de todos os agendamentos feitos, agrupados por dia e hora.
+  - Permite informir se o agendamento foi realizado ou não.
+  - Permite detalhar conclusão do atendimento (se foi realizado).
+
+
+## Instalação
+
+Clone o repositório:
+
+```bash
+  git clone
+  cd desafio-pitang-api
+```
+Instale as dependências:
+
+```bash
+  npm install 
+  #ou
+  yarn install
+
+```
+
+
+
+    
+## Uso
+
+Para iniciar a aplicação, use o comando:
+```
+npm start
+#ou
+yarn start
+
+```
+## Testes
+
+Para rodar os testes, use o comando:
+
+```
+yarn test
+# ou
+npm test
+
+```
+
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
