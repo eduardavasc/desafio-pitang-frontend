@@ -67,7 +67,11 @@ const Schedule = () => {
   };
 
   return (
-    <Flex width="full" align="center" justifyContent="center">
+    <Flex flexDirection="column"
+    
+    height="100vh"
+    justifyContent="center"
+    alignItems="center">
       {isInfoModalOpen && <CustomModal />}
       <Box p={2}>
         <Box textAlign="center">
@@ -107,7 +111,7 @@ const Schedule = () => {
               filterTime={filterPassedTime}
               testId="scheduledDate"
             />
-            <Button width="full" mt={8} type="submit" isLoading={isLoading}>
+            <Button bgColor={'gray.300'} width="full" mt={8} type="submit" isLoading={isLoading}>
               Agendar
             </Button>
           </form>
