@@ -56,14 +56,14 @@ const FormModal = () => {
     <>
       <Modal isOpen={isFormModalOpen} onClose={closeModal} isCentered size="lg">
         <ModalOverlay bg="blackAlpha.300" />
-        <ModalContent>
-          <ModalHeader>ID do Agendamento: {schedule.id}</ModalHeader>
+        <ModalContent data-testid="formModalContent">
+          <ModalHeader data-testid="formModalHeader">ID do Agendamento: {schedule.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl id="scheduleCompleted" mb={4}>
-                <FormLabel>Status do Agendamento</FormLabel>
-                <Select {...register("scheduleCompleted", { required: true })}>
+                <FormLabel data-testid="formLabel">Status do Agendamento</FormLabel>
+                <Select {...register("scheduleCompleted", { required: true })} data-testid="formSelect">
                   <option value="true">Concluído</option>
                   <option value="false">Não Concluído</option>
                 </Select>
@@ -76,7 +76,7 @@ const FormModal = () => {
               />
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} type="submit">
+                <Button colorScheme="blue" mr={3} type="submit" data-testid="submitFormModalButton">
                   OK
                 </Button>
                 <Button variant="ghost" onClick={closeModal}>

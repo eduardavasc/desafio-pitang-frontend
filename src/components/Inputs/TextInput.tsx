@@ -29,7 +29,7 @@ const TextInput = <T extends FieldValues>({
   return (
     <FormControl isInvalid={!!errors[name]} isRequired>
       <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Input id={name} disabled={disabled} {...register(name)} />
+      <Input id={name} disabled={disabled} {...register(name)} data-testid="formTextInput"/>
       <FormErrorMessage>
         {errors[name] && errors[name]?.message?.toString()}
       </FormErrorMessage>
